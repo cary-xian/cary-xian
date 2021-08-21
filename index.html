@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猜拳小游戏</title>
+    <!-- ui样式 -->
+    <style type="text/css">
+           .w{
+               width: 1000px;
+               margin:0 auto;
+           }
+           .fl{
+               float: left;
+           }
+           .fr{
+               float: right;
+           }
+           body{
+               background-color: darkgrey;
+           }
+           .box{
+               padding-left: 600px;
+               padding-top: 80px; 
+           }
+           .border{
+               position: relative;
+               border: 2px solid #000;
+               width: 192px;
+               height: 235px;
+               background-color: rgb(246,246,246);
+           }
+           .ui{
+               margin-top: 0;
+               list-style: none;
+               height:100%;
+           }
+           .ui li{
+               position:absolute;
+               margin-top: 0px;
+               margin-left: -40px;
+               width:100%;
+               height:100%;
+           }
+           .ui li img{
+               position: absolute;
+               top:0;
+               left: 0;
+               width:100%;
+               height:100%;
+               opacity: 0;
+           }
+           .ui li img:first-child{
+                opacity: 1.0;
+           }
+           .b{
+               width: 300px;
+               margin-top: 10px;
+               margin-left: -20px; 
+               padding-left: 50px;
+           }
+           input[id="btn"]{
+               display: block;
+               width: 100px;
+               height: 55px;
+               color:#fff;
+               background-color: #000;
+               font-size: 18px;
+           }
+           p{
+               width: 70px;
+               height: 35px;
+               margin-right: 10px;
+               margin-top: 3px;
+               float: left;
+               border-right:2px solid gray;
+           }
+           p:last-child{
+               border: 0;
+           }
+           .sel{
+              width: 300px;
+              height:40px;
+              margin-top: 10px;
+              margin-left: -10px;
+           }
+           #i1,#i2,#i3{
+               width: 40px;
+               height: 40px;
+               float: left;
+           }
+            input[name="select"]{
+               display: block;
+               width: 20px;
+               height: 20px;
+               float: left;
+           }
+    </style>
+</head>
+<body>
+       <!-- ui界面结构 -->
+       <!-- 外边界 -->
+      <div class="box w">
+          <!-- 图片边框 -->
+          <div class="border">
+              <!-- 图片组 -->
+              <ul class="ui">
+                  <li><img src="img/cloth.png" alt="图片加载失败"></li>
+                  <li><img src="img/cut.png" alt="图片加载失败"></li>
+                  <li><img src="img/rock.png" alt="图片加载失败"></li>
+              </ul>
+          </div>
+          <!-- 用户选项 -->
+          <div class="sel"> 
+                <p><label><img id="i1" src="img/cloth.png" alt="图片加载失败"><input id="s1" type="radio" value="0" name="select"></label></p>
+                <p><label><img id="i2" src="img/cut.png" alt="图片加载失败"><input id="s2" type="radio" value="1" name="select"></label></p>
+                <p><label><img id="i3" src="img/rock.png" alt="图片加载失败"><input id="s3" type="radio" value="2" name="select"></label></p>
+          </div>
+          <!-- 按钮 -->
+          <div class="b">
+                <input id="btn" type="button" value="开始猜拳" >
+          </div>
+      </div>
+      <!-- 页面逻辑 -->
+    <script type="text/javascript">
+        // 立即执行函数
+        window.onload=function(){
+             var btn=document.querySelector('#btn');
+             var computer=document.querySelector("ul[class='ui']");
+             var cr=computer.children;
+             var i=0;
+             var obj=null;
+             var user=0;
+             var com=0;
+             var sel1=document.querySelector("input[id='s1']");
+             var sel2=document.querySelector("input[id='s2']");
+             var sel3=document.querySelector("input[id='s3']");
+             sel1.addEventListener(
+                 'click',function(){
+                     user=0;
+                 }
+             );
+             sel2.addEventListener(
+                 'click',function(){
+                     user=1;
+                 }
+             );
+             sel3.addEventListener(
+                 'click',function(){
+                     user=2;
+                 }
+             );
+             btn.addEventListener('click',function(){
+                function auto(){
+                        obj=setInterval(
+                            function(){
+                                if(i==cr.length){
+                                    i=0;
+                                    for(j=0;j<cr.length;j++){
+                                        cr[j].style.opacity=0;
+                                    }
+                                    cr[0].style.opacity=1.0;
+                                    
+                                }
+                                for(j=0;j<cr.length;j++){
+                                        cr[j].style.opacity=0;
+                                }
+                                cr[i].style.opacity=1.0;
+                                i++;
+                                },350);
+                    }
+                    auto();
+                    setTimeout(
+                        function(){
+                            clearInterval(obj);
+                            com=i-1;
+                            console.log('电脑'+com);
+                            console.log('用户'+user);
+                            // 结算算法
+                            if(user==0&&com==2){
+                                alert("恭喜你，你赢了");
+                            }else if(user==2&&com==0){
+                                alert("很遗憾，你输了");
+                            }else if(user>com){
+                                alert("恭喜你，你赢了");
+                           }else if(user==com){
+                               alert("平局");
+                           }else if(user<com){
+                             alert("很遗憾，你输了");
+                           }
+                        },3000
+                    );
+               });
+            }
+</script>
+</body>
+</html>
